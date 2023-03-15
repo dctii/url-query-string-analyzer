@@ -211,12 +211,18 @@ def go_to_url(url, ga_script_pattern, quiet=False, proxy='proxy-off', headless='
       subprocess.run(['safaridriver', '--enable'])
       driver = webdriver.Safari()
     elif browser == "Chrome":
-      print(browser)
       opts = chrome_opts(proxy, headless)
       driver = webdriver.Chrome(options=opts)
 
+    try:
     # go to the URL
-    driver.get(url)
+      driver.get(url)
+    except WebDriverException as e:
+      if "ERR_PROXY_CONNECTION_FAILED" in str(e):
+        print(f"{ansi.R}{ansi.BD}'ERR_PROXY_CONNECTION_FAILED' occured with '{ansi.IT}{browser}{ansi.RST_ALL}' {ansi.R}{ansi.BD}while loading URL:\n", url + f'{ansi.RST_ALL}\n')
+        print(f"{ansi.Y}Attempt activating your web proxies and mitmproxy, then try again.{ansi.RST_ALL}\n")
+        print("Exiting program")
+        exit(1)
 
     # wait for 10 seconds for the google-analytics element to be present
     wait = WebDriverWait(driver, 6)
@@ -246,10 +252,10 @@ def go_to_url(url, ga_script_pattern, quiet=False, proxy='proxy-off', headless='
         print("\n")
 
     except TimeoutException:
-        print(f"{ansi.R}{ansi.BD}⨯ Timed out waiting for google-analytics element{ansi.RST}\n")
+        print(f"{ansi.R}{ansi.BD}⨯ '{ga_script_pattern}' not detected in any <script> tags{ansi.RST}\n")
     except WebDriverException as e:
           if isinstance(e, NoSuchWindowException):
-              print(f"{ansi.R}{ansi.BD}⨯ Browser window was closed prematurely{ansi.RST}\n")
+              print(f"{ansi.R}{ansi.BD}⨯ {ansi.IT}{browser} window was closed prematurely{ansi.RST_ALL}\n")
               print(f"{ansi.Y}Exiting the script.")
               exit(1)
           else:
