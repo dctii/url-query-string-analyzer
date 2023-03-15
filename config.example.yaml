@@ -7,8 +7,9 @@ tls_version_server_max: "TLS1_3"
 
 # This allows these hosts in the flow list. It does not block traffic though. Must use `block_list = Sequence[str]` to do so
 allow_hosts:
+  - 'analytics.google*'
   - 'google-analytics*'
-  - 'localhost*'
+  # - 'localhost*'
   # - 'opera*'
 
 # What you want to appear in the flow list
