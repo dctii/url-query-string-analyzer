@@ -1,0 +1,20 @@
+# mitmproxy configuration file
+
+tls_version_client_min: "TLS1_2"
+tls_version_client_max: "TLS1_3"
+tls_version_server_min: "TLS1_2"
+tls_version_server_max: "TLS1_3"
+
+# This allows these hosts in the flow list. It does not block traffic though. Must use `block_list = Sequence[str]` to do so
+allow_hosts:
+  - 'google-analytics*'
+  - 'localhost*'
+  # - 'opera*'
+
+# What you want to appear in the flow list
+# view_filter: '~m POST'
+
+# List of filter expressions found here: https://docs.mitmproxy.org/stable/concepts-filters/
+# rep
+# intercept: '~m POST & ~u "tid=G-" & ~u "gtm=" & (~u "keyNameX=valueX" | ~u "keyNameY=valueY")'
+intercept: '~m POST & ~u "tid=G-" & ~u "gtm="
