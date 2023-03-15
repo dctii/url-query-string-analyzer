@@ -1,5 +1,5 @@
 # url-query-string-analyzer
- Built to analyze Google Analytics query string parameters.
+ Uses mitmproxy as network trafficking reader and interceptor. Uses Selenium to automate URL visits. Initially built to analyze Google Analytics query string parameters, but can be adjusted to analyze any parameters of a URL.
 
 
 ### Brew packages to install:
