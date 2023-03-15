@@ -17,4 +17,4 @@ allow_hosts:
 # List of filter expressions found here: https://docs.mitmproxy.org/stable/concepts-filters/
 # rep
 # intercept: '~m POST & ~u "tid=G-" & ~u "gtm=" & (~u "keyNameX=valueX" | ~u "keyNameY=valueY")'
-intercept: '~m POST & ~u "tid=G-" & ~u "gtm="
+intercept: '~m POST & ~u "en=page_view"'

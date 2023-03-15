@@ -30,7 +30,7 @@ For the script name, do not add the extension. Just the name. So, don't put `scr
 **Screen 1:**
 ```bash
 source .venv/bin/activate
-start-mitmproxy
+zsh start-mitmproxy.sh
 	Would you like to add a script (y/n) y
 	What is the name of the script? script
 ```

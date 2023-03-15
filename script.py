@@ -24,7 +24,7 @@ load_dotenv()
 psw = os.getenv('password')
 
 # Initialize empty set for URLs that are detected to have target query string parameters with 'google-analytics.com' as domain
-ga_urls = set()
+satisfactory_urls = set()
 
 """
 Type in the name of this script to run it with mitmproxy; command in the line below
@@ -65,18 +65,19 @@ class HTTPInterceptor:
         # Conditions to meet to add to Google Analytics URL, `ga_urls` list to be compared against entire `url_set`
         # !important -- change these to suit the interception parameters you want
         http_method = 'POST'
-        ga_domain = 'google-analytics.com'
-        ga_path_lead = '/j/collect?v'
+        target_domain1 = 'google-analytics.com'
+        target_domain2 = 'analytics.google.com'
+        target_path_lead = '/g/collect?v'
         url_key = 'dl'
-        qsp_key = 'cd3' # qsp (query string parameter)
-        value = 'view_item'
+        qsp_key = 'en' # qsp (query string parameter)
+        value = 'page_view'
         
         if (meth == http_method and
-            ga_domain in host and
-            ga_path_lead in path and
+            target_domain1 or target_domain2 in host and
+            target_path_lead in path and
             q.get(qsp_key) == value):
             ctx.log.warn(f"Adding '{q.get(url_key)}' to 'ga_urls' set()")
-            ga_urls.add(q.get(url_key))
+            satisfactory_urls.add(q.get(url_key))
 
     @concurrent
     def response(self, flow: HTTPFlow) -> None:
@@ -92,10 +93,11 @@ class HTTPInterceptor:
     # 03-...csv shows all that were orange in 02-...csv without the orange marker prepended.
     @concurrent
     def done(self):
-        if not ga_urls:
+        if not satisfactory_urls:
+            print(f'{ansi.R}No satisfactory urls added to the list. Will not output any addtional CSVs.{ansi.RST}')
             pass
         else:
-            compare_url_lists(ga_urls)
+            compare_url_lists(satisfactory_urls)
         # Disable proxies
         disable_proxies(psw, False)
 

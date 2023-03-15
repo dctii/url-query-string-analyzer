@@ -20,7 +20,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchWindowException
 from selenium.webdriver.common.by import By
 
-from browser_options import (
+from tools.browser_options import (
   chrome_opts,
   firefox_opts,
   # TODO: Fixing these/seeing what's possible
